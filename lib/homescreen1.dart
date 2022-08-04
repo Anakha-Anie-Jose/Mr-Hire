@@ -7,10 +7,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'model/user_model.dart';
-//import 'homescreen2.dart';
-import 'listapp.dart';
-import 'searchjob.dart';
+ import 'model/user_model.dart';
+ import 'demo.dart';
+// //import 'homescreen2.dart';
+//
+ import 'searchjob.dart';
+import 'postjob.dart';
+import 'gethired.dart';
+import 'viewemployyes.dart';
 
 class HomeScreen1 extends StatefulWidget {
   const HomeScreen1({Key? key}) : super(key: key);
@@ -45,7 +49,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
   Widget build(BuildContext context) {
     log("Index number is: $loggedInUser.firstName");
     final welcomeText=Text
-      ("Hey, ${loggedInUser.firstName}",
+      ("Hey ${loggedInUser.firstName}",
     style:TextStyle(
       fontSize: 30),
     );
@@ -62,7 +66,8 @@ class _HomeScreen1State extends State<HomeScreen1> {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => GetHired()));
           },
           child: Text(
             "GET HIRED",
@@ -101,10 +106,10 @@ class _HomeScreen1State extends State<HomeScreen1> {
 
               ) {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => ListApp()));
+                MaterialPageRoute(builder: (context) => viewlist()));
           },
           child: Text(
-            "SEARCH AN EMPLOYEE",
+            "SEARCH FOR AN EMPLOYEE",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
@@ -118,7 +123,8 @@ class _HomeScreen1State extends State<HomeScreen1> {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => PostJob()));
           },
           child: Text(
             "POST YOUR JOB",
@@ -129,8 +135,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
     );
     return Scaffold(
       appBar: AppBar(
-        //title: const Text("Welcome"),
-        // centerTitle: true,
+
         actions: [
           IconButton(
             icon: Icon(Icons.logout_rounded),
@@ -141,6 +146,9 @@ class _HomeScreen1State extends State<HomeScreen1> {
             },
           ),
         ],
+        title:Center(
+          child:Text( "       Mr.Hire",style:TextStyle(fontSize:30.0)),
+      ),
       ),
       body: Center(
         child: Padding(

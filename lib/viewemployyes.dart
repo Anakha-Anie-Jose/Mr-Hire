@@ -1,49 +1,51 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'homescreen1.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'model/job.dart';
-import 'jobdetails.dart';
+import 'viewprof.dart';
+import 'model/employee.dart';
 //imported google's material design library
-class SearchJob extends StatefulWidget {
-  const SearchJob({Key? key}) : super(key: key);
+class viewlist extends StatefulWidget {
+  const viewlist({Key? key}) : super(key: key);
 
   @override
-  _SearchJobState createState() => _SearchJobState();
+  _viewlistState createState() => _viewlistState();
 }
-class _SearchJobState extends State<SearchJob> {
-  JobModel model = new JobModel(jobTitle: '',
-      email: '',
-      Address: '',
+class _viewlistState extends State<viewlist> {
+  EmpModel model = new EmpModel(
+
+      Name: '',
+      address: '',
       description: '',
-      deadline: '',
-      time: '',
+      title: '',
+      state: '',
       phone:'',
-     location:'');
-  List<JobModel> jobList = [];
+      pin:'',
+       url:'',);
+  List<EmpModel> EmpList = [];
 
   @override
   void initState ()  {
     super.initState();
-     getjobs();
+    getjobs();
 
   }
-Future getjobs() async{
-  var data = await FirebaseFirestore.instance
-      .collection("postjob").get();
+  Future getjobs() async{
+    var data = await FirebaseFirestore.instance
+        .collection("gethired").get();
 
-  // final uid=user?.uid;
-  setState(() {
-    jobList = List.from(data.docs.map((doc) => JobModel.fromSnapshot(doc)));
-  });
-}
+
+    setState(() {
+      EmpList = List.from(data.docs.map((doc) => EmpModel.fromSnapshot(doc)));
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //actions: [
+
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -51,32 +53,25 @@ Future getjobs() async{
                   MaterialPageRoute(builder: (context) => HomeScreen1()));
             },
           ),
-       // ],
-        title: Text('Look for the feasible jobs!'),
+
+        title: Text('Get an Employee for you!'),
         backgroundColor: Colors.purple[400],
         centerTitle: true,
       ),
-      //AppBar
-      // body: jobList.length == 0
-      //     ? Center(child: Text('No jobs found! ${model.Address}'))
-      //     : ListView.builder(
-      //     itemBuilder: (_, index) {
-      //       return CardUI(jobList[index].Address, jobList[index].jobTitle);
-      //     }
-      // ),
+
       body:SafeArea(
-        child:ListView.builder(
-          itemCount: jobList.length,
-          itemBuilder: (context,index) {
-            //return Text("$index");
-            return CardUI(jobList[index].Address, jobList[index].jobTitle,jobList[index].description,jobList[index].location,jobList[index].deadline,jobList[index].phone,jobList[index].time);
-          },
-        )
+          child:ListView.builder(
+            itemCount: EmpList.length,
+            itemBuilder: (context,index) {
+              //return Text("$index");
+              return CardUI(EmpList[index].Name, EmpList[index].address,EmpList[index].description,EmpList[index].phone,EmpList[index].pin,EmpList[index].title,EmpList[index].state,EmpList[index].state);
+            },
+          )
       ),
     );
   }
 
-  Widget CardUI(String address, String title,String desc,String location,String deadline,String phone,String time) {
+  Widget CardUI(String name,String address,String desc,String phone,String pin,String title,String state,String url) {
     return Card(
       elevation: 50,
       shadowColor: Colors.black,
@@ -93,15 +88,16 @@ Future getjobs() async{
                 radius: 108,
                 child: CircleAvatar(
                   backgroundImage: AssetImage(
-                     "lib/assets/images/errands1.png"),
-                 radius: 100,
+                    "lib/assets/images/avatar.png"),
+
+                  radius: 100,
                 ), //CircleAvatar
               ), //CircleAvatar
               SizedBox(
                 height: 10,
               ), //SizedBox
               Text(
-                '$title',
+                '$name',
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.purple[900],
@@ -112,7 +108,7 @@ Future getjobs() async{
                 height: 10,
               ), //SizedBox
               Text(
-                '$location',
+                '$title',
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.purple[900],
@@ -124,23 +120,23 @@ Future getjobs() async{
               SizedBox(
                 width: 80,
                 child: FloatingActionButton(
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0)),
                   onPressed: () {
 
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => jobdetails(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => viewprofile(
 
-                          title: '$title',
-                          description: '$desc',
-                          location: '$location',
-                          deadline: '$deadline',
-                          phone: '$phone',
-                          time: '$time',
-                          address:'$address'
+                            name:'$name',
+                            title: '$title',
+                            description: '$desc',
+                             phone: '$phone',
+                             pin:'$pin',
+                             address:'$address',
+                             state: '$state',
+                              url:'$url',
                         )));
                   },
-                  //color: Colors.purple,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                  //color:Colors.purple,
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Row(
@@ -163,8 +159,8 @@ Future getjobs() async{
 }
 
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+@override
+Widget build(BuildContext context) {
+  // TODO: implement build
+  throw UnimplementedError();
+}

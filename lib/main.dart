@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mrhire/login_screen.dart';
+import 'package:mrhirep/login_screen.dart';
+//import './firstpage.dart';
+import 'package:mrhirep/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mrhirep/demo.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +22,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
         primarySwatch: Colors.purple,
+
       ),
+
+
       home: LoginScreen(),
     );
   }
